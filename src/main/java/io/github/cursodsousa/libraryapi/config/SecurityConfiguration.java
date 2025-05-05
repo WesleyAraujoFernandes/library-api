@@ -24,27 +24,29 @@ import io.github.cursodsousa.libraryapi.service.UsuarioService;
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(
-        HttpSecurity http, 
-        LoginSocialSuccessHandler successHandler) throws Exception {
+            HttpSecurity http,
+            LoginSocialSuccessHandler successHandler) throws Exception {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults()) // Permite que receba os dados de autenticação pelo postman
-                /*
+
                 .formLogin(configurer -> {
-                    configurer.loginPage("/login"); // 
-                }) */ // Permite que receba os dados de autenticação por formulário de login via
+                    configurer.loginPage("/login"); //
+                }) // Permite que receba os dados de autenticação por formulário de login via
                    // browser
-                .formLogin(Customizer.withDefaults())
+                   // .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/login/**").permitAll();
-                    authorize.requestMatchers(HttpMethod.POST,"/usuarios/**").permitAll();
-                    //authorize.requestMatchers("/autores/**").hasRole("ADMIN");
-                    //authorize.requestMatchers("/livros/**").hasAnyRole("USER","ADMIN");
+                    authorize.requestMatchers(HttpMethod.POST, "/usuarios/**").permitAll();
+                    // authorize.requestMatchers("/autores/**").hasRole("ADMIN");
+                    // authorize.requestMatchers("/livros/**").hasAnyRole("USER","ADMIN");
                     authorize.anyRequest().authenticated(); // anyRequest dever ser a última configuração
                 })
                 .oauth2Login(oauth2 -> {
-                    oauth2.successHandler(successHandler);
+                    oauth2
+                        .loginPage("/login")
+                        .successHandler(successHandler);
                 })
                 .build();
     }
@@ -55,22 +57,22 @@ public class SecurityConfiguration {
 
     }
 
-    //@Bean
+    // @Bean
     public UserDetailsService userDetailsService(UsuarioService usuarioService) {
         /*
-        UserDetails user1 = User.builder()
-            .username("usuario")
-            .password(encoder.encode("123"))
-            .roles("USER")
-            .build();
-
-            UserDetails user2 = User.builder()
-            .username("admin")
-            .password(encoder.encode("321"))
-            .roles("ADMIN")
-            .build();
-        return new InMemoryUserDetailsManager(user1, user2);
-    */
+         * UserDetails user1 = User.builder()
+         * .username("usuario")
+         * .password(encoder.encode("123"))
+         * .roles("USER")
+         * .build();
+         * 
+         * UserDetails user2 = User.builder()
+         * .username("admin")
+         * .password(encoder.encode("321"))
+         * .roles("ADMIN")
+         * .build();
+         * return new InMemoryUserDetailsManager(user1, user2);
+         */
         return new CustomUserDetailsService(usuarioService);
     }
 
