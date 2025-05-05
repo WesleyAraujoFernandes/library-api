@@ -92,7 +92,6 @@ public class AutorController implements GenericController {
                 .stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
-        // 200 OK
         return ResponseEntity.ok(lista);
     }
 
