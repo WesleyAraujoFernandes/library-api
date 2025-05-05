@@ -130,7 +130,7 @@
 		</plugins>
 	</build>
 
-	<!--
+	
 	<dependencyManagement>
 	
 
@@ -146,5 +146,5 @@
 		</dependencies>
 
 	</dependencyManagement>
-	-->
+	
 </project>
