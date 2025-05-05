@@ -1,6 +1,5 @@
 package io.github.cursodsousa.libraryapi.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,45 +42,47 @@ public class LivroService {
     }
 
     public Page<Livro> pesquisa(
-        String isbn, 
-        String titulo, 
-        String nomeAutor, 
-        GeneroLivro genero, 
-        Integer anoPublicacao,
-        Integer pagina,
-        Integer tamanhoPagina ) {
-            /* Exemplo para fazer de uma vez só
-            Specification<Livro> specs = Specification
-                .where(LivroSpecs.isbnEqual(isbn))
-                .and(LivroSpecs.tituloLike(titulo))
-                .and(LivroSpecs.generoEqual(genero))
-                ;
-            */
-            // where isbn = :isbn
-            //Specification<Livro> isbnEquals = (root, query, cb) -> cb.equal(root.get("isbn"), isbn);
+            String isbn,
+            String titulo,
+            String nomeAutor,
+            GeneroLivro genero,
+            Integer anoPublicacao,
+            Integer pagina,
+            Integer tamanhoPagina) {
+        /*
+         * Exemplo para fazer de uma vez só
+         * Specification<Livro> specs = Specification
+         * .where(LivroSpecs.isbnEqual(isbn))
+         * .and(LivroSpecs.tituloLike(titulo))
+         * .and(LivroSpecs.generoEqual(genero))
+         * ;
+         */
+        // where isbn = :isbn
+        // Specification<Livro> isbnEquals = (root, query, cb) ->
+        // cb.equal(root.get("isbn"), isbn);
 
-            // select * from livro where 0 = 0 
-            // Utiliza-se assim para iniciar a spec e poder montá-la dinamicamente 
-            //de acordo com os parâmetros que estão preenchidos
-            Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction() );
-            if (isbn != null) {
-                specs = specs.and(isbnEqual(isbn));
-            }
-            if (titulo != null) {
-                specs = specs.and(tituloLike(titulo));
-            }
-            if (genero != null) {
-                specs = specs.and(generoEqual(genero));
-            }
-            if (anoPublicacao != null) {
-                specs = specs.and(anoPublicacaoEqual(anoPublicacao));
-            }
-            if (nomeAutor != null) {
-                specs = specs.and(nomeAutorLike(nomeAutor));
-            }
+        // select * from livro where 0 = 0
+        // Utiliza-se assim para iniciar a spec e poder montá-la dinamicamente
+        // de acordo com os parâmetros que estão preenchidos
+        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction());
+        if (isbn != null) {
+            specs = specs.and(isbnEqual(isbn));
+        }
+        if (titulo != null) {
+            specs = specs.and(tituloLike(titulo));
+        }
+        if (genero != null) {
+            specs = specs.and(generoEqual(genero));
+        }
+        if (anoPublicacao != null) {
+            specs = specs.and(anoPublicacaoEqual(anoPublicacao));
+        }
+        if (nomeAutor != null) {
+            specs = specs.and(nomeAutorLike(nomeAutor));
+        }
 
-            Pageable pageRequest = PageRequest.of(pagina, tamanhoPagina);
-            return repository.findAll(specs, pageRequest);
+        Pageable pageRequest = PageRequest.of(pagina, tamanhoPagina);
+        return repository.findAll(specs, pageRequest);
     }
 
     public void atualizar(Livro livro) {
