@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import io.github.cursodsousa.libraryapi.security.CustomUserDetailsService;
+import io.github.cursodsousa.libraryapi.security.LoginSocialSuccessHandler;
 import io.github.cursodsousa.libraryapi.service.UsuarioService;
 
 @Configuration
@@ -22,7 +23,9 @@ import io.github.cursodsousa.libraryapi.service.UsuarioService;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+        HttpSecurity http, 
+        LoginSocialSuccessHandler successHandler) throws Exception {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -40,7 +43,9 @@ public class SecurityConfiguration {
                     //authorize.requestMatchers("/livros/**").hasAnyRole("USER","ADMIN");
                     authorize.anyRequest().authenticated(); // anyRequest dever ser a última configuração
                 })
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> {
+                    oauth2.successHandler(successHandler);
+                })
                 .build();
     }
 

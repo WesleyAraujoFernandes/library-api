@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         return new ErroResposta(
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
-                "Erro de Validaçao",
+                "Erro de Validação",
                 listaErros);
     }
 
