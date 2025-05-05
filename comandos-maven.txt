@@ -1,0 +1,2 @@
+# Comando para gerar os arquivos .class sem executar os testes.
+mvn clean install -DskipTests

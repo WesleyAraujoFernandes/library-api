@@ -1,0 +1,24 @@
+# Rodar container Postgres na versão 16.8 (é necessário remover [docker rm] o container antes de executar o comando)
+# É necessário parar o serviço do postgresql na máquina local, ou a aplicação tentará se conectar nele ao invés de conectar no container
+docker run --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library -d --network library-network postgres:16.8
+
+# Rodar PgAdmin 4  (é necessário remover [docker rm] o container antes de executar o comando)
+docker run --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin -p 15432:80 -d --network library-network dpage/pgadmin4
+
+# Criar uma rede
+docker network create library-network
+e57e7a670e9f437dd63487a2a32dd19568ca5b2014b7feae046e1a34ff63991b
+
+# pgAdmin Login
+admin@admin.com
+admin
+
+# Como verificar se uma porta está sendo usada no command do windows
+netstat -aof | findstr 5432
+
+# Configuração Hikari
+https://github.com/brettwooldridge/HikariCP
+
+# Curso Udemy
+[ATUALIZADO 2025] Profissionalize-se em Java com Spring Boot em um Guia Completo e atualizado do Zero ao Deploy na AWS
+47 - Solucionando problemas que podem ocorrer com o ambiente no Docker.
